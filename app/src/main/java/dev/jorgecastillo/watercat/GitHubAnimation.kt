@@ -29,10 +29,8 @@ fun WaterCat() {
     return max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
   }
 
-  fun keepDrawing(elapsedTime: Long): Boolean {
-    Log.d("CAT", "${elapsedTime < strokeDrawingDuration + fillDuration}")
-    return elapsedTime < strokeDrawingDuration + fillDuration
-  }
+  fun keepDrawing(elapsedTime: Long): Boolean =
+    elapsedTime < strokeDrawingDuration + fillDuration
 
   fun DrawScope.drawStroke(elapsedTime: Long) {
     val strokePercent = max(0f, min(1f, elapsedTime * 1f / strokeDrawingDuration))

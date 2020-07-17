@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.ComposeConstraintLayout" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.ComposeFillableLoaders" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#C2175B</item>
         <item name="colorPrimaryDark">#C2175B</item>
         <item name="windowActionBar">false</item>
