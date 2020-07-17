@@ -16,10 +16,10 @@ import androidx.ui.layout.fillMaxSize
 import kotlin.math.max
 import kotlin.math.min
 
-private const val fillDuration = 10000
 private const val strokeDrawingDuration = 1000
+private const val fillDuration = 10000
 
-val animInterpolator = LinearOutSlowInEasing
+val animationEasing = LinearOutSlowInEasing
 
 @Composable
 fun WaterCat() {
@@ -35,7 +35,7 @@ fun WaterCat() {
   fun DrawScope.drawStroke(elapsedTime: Long) {
     val strokePercent = max(0f, min(1f, elapsedTime * 1f / strokeDrawingDuration))
 
-    val amountOfNodesToDraw = (animInterpolator(
+    val amountOfNodesToDraw = (animationEasing(
       strokePercent
     ) * catPathNodes().size).toInt()
 
