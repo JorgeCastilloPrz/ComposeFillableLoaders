@@ -2,7 +2,7 @@ package dev.jorgecastillo.watercat
 
 import androidx.ui.graphics.vector.PathParser
 
-private var GITHUB =
+private var OCTOCAT =
   """M 112.33,232.00
            C 109.27,216.19 108.87,196.79 112.33,181.00
              114.49,170.23 117.46,161.47 123.20,152.00
@@ -126,6 +126,6 @@ private var GITHUB =
              197.00,349.00 197.00,347.00 197.00,347.00
              193.13,346.36 192.85,346.27 190.00,349.00 Z"""
 
-private val catPath = PathParser().parsePathString(GITHUB)
+private val catPath = PathParser().parsePathString(OCTOCAT)
 fun catPathNodes() = catPath.toNodes()
 fun catPath() = catPath.toPath()

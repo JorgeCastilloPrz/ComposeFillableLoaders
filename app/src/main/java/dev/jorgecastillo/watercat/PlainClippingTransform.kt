@@ -1,5 +1,6 @@
 package dev.jorgecastillo.watercat
 
+import android.util.Log
 import androidx.ui.graphics.ClipOp
 import androidx.ui.graphics.drawscope.DrawScope
 import androidx.ui.graphics.drawscope.clipRect
@@ -12,6 +13,8 @@ fun DrawScope.plainClip(currentFillPhase: Float, block: DrawScope.() -> Unit) {
   val top = center.dy - halfHeight
   val right = center.dx + halfWidth
   val bottom = center.dy + halfHeight
+
+  Log.d("CAT", "left: $left, top: $top, right: $right, bottom: $bottom")
 
   this.clipRect(
     left = left,

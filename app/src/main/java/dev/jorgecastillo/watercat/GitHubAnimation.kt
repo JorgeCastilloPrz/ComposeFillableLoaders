@@ -18,6 +18,7 @@ import kotlin.math.min
 
 private const val strokeDrawingDuration = 1000
 private const val fillDuration = 10000
+private const val totalTime = strokeDrawingDuration + fillDuration
 
 val animationEasing = LinearOutSlowInEasing
 
@@ -29,18 +30,15 @@ fun WaterCat() {
     return max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
   }
 
-  fun keepDrawing(elapsedTime: Long): Boolean =
-    elapsedTime < strokeDrawingDuration + fillDuration
+  fun keepDrawing(elapsedTime: Long): Boolean = elapsedTime < totalTime
 
   fun DrawScope.drawStroke(elapsedTime: Long) {
     val strokePercent = max(0f, min(1f, elapsedTime * 1f / strokeDrawingDuration))
 
-    val amountOfNodesToDraw = (animationEasing(
-      strokePercent
-    ) * catPathNodes().size).toInt()
+    val nodesToDraw = (animationEasing(strokePercent) * catPathNodes().size).toInt()
 
     val path = PathParser().addPathNodes(
-      catPathNodes().take(amountOfNodesToDraw)
+      catPathNodes().take(nodesToDraw)
     ).toPath()
     this.drawPath(path, Color.Blue, style = Stroke(4f))
   }
@@ -53,7 +51,6 @@ fun WaterCat() {
     if (elapsedTime > strokeDrawingDuration) {
       if (state.value.animationPhase < AnimationPhase.FILL_STARTED) {
         state.value = state.value.copy(animationPhase = AnimationPhase.FILL_STARTED)
-        Log.d("CAT", "Elapsed: $elapsedTime, State -> FILL_STARTED")
       }
 
       val fillPercent = getFillPercent(elapsedTime)
@@ -64,7 +61,6 @@ fun WaterCat() {
 
     if (!keepDrawing(elapsedTime)) {
       state.value = state.value.copy(animationPhase = AnimationPhase.FINISHED)
-      Log.d("CAT", "State -> FINISHED")
     }
   }
 }
