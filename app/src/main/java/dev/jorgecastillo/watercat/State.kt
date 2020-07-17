@@ -1,10 +1,10 @@
 package dev.jorgecastillo.watercat
 
-enum class WaterCatState {
+enum class AnimationPhase {
   STROKE_STARTED, FILL_STARTED, FINISHED
 }
 
 data class AnimationState(
-  val state: WaterCatState,
-  val time: Long
+  val animationPhase: AnimationPhase,
+  val elapsedTime: Long
 )

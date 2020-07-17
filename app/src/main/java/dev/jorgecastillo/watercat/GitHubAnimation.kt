@@ -2,8 +2,9 @@ package dev.jorgecastillo.watercat
 
 import android.util.Log
 import androidx.animation.LinearOutSlowInEasing
-import androidx.compose.Composable
-import androidx.compose.state
+import androidx.compose.*
+import androidx.lifecycle.whenStarted
+import androidx.ui.core.LifecycleOwnerAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Canvas
 import androidx.ui.graphics.Color
@@ -22,8 +23,7 @@ val animInterpolator = LinearOutSlowInEasing
 
 @Composable
 fun WaterCat() {
-  val initialTime = System.currentTimeMillis()
-  val state = state { WaterCatState.STROKE_STARTED }
+  val state = animationTimeMillis()
 
   fun getFillPercent(elapsedTime: Long): Float {
     return max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
@@ -42,19 +42,19 @@ fun WaterCat() {
     ) * catPathNodes().size).toInt()
 
     val path = PathParser().addPathNodes(
-      catPathNodes().take(amountOfNodesToDraw)).toPath()
+      catPathNodes().take(amountOfNodesToDraw)
+    ).toPath()
     this.drawPath(path, Color.Blue, style = Stroke(4f))
   }
 
   Canvas(modifier = Modifier.fillMaxSize()) {
-    val elapsedTime = System.currentTimeMillis() - initialTime
+    val elapsedTime = state.value.elapsedTime
     drawStroke(elapsedTime)
 
     // Is stoke completely drawn.
     if (elapsedTime > strokeDrawingDuration) {
-      if (state.value < WaterCatState.FILL_STARTED) {
-        state.value =
-          WaterCatState.FILL_STARTED
+      if (state.value.animationPhase < AnimationPhase.FILL_STARTED) {
+        state.value = state.value.copy(animationPhase = AnimationPhase.FILL_STARTED)
         Log.d("CAT", "Elapsed: $elapsedTime, State -> FILL_STARTED")
       }
 
@@ -65,9 +65,29 @@ fun WaterCat() {
     }
 
     if (!keepDrawing(elapsedTime)) {
-      state.value =
-        WaterCatState.FINISHED
+      state.value = state.value.copy(animationPhase = AnimationPhase.FINISHED)
       Log.d("CAT", "State -> FINISHED")
     }
   }
+}
+
+/**
+ * Returns a [State] holding a local animation time in milliseconds. The value always starts
+ * at `0L` and stops updating when the call leaves the composition.
+ */
+@Composable
+private fun animationTimeMillis(): MutableState<AnimationState> {
+  val millisState = state { AnimationState(AnimationPhase.STROKE_STARTED, 0L) }
+  val lifecycleOwner = LifecycleOwnerAmbient.current
+  launchInComposition {
+    val startTime = awaitFrameMillis { it }
+    lifecycleOwner.whenStarted {
+      while (true) {
+        awaitFrameMillis { frameTime ->
+          millisState.value = millisState.value.copy(elapsedTime = frameTime - startTime)
+        }
+      }
+    }
+  }
+  return millisState
 }
