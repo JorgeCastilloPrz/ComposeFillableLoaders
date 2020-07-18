@@ -1,6 +1,5 @@
 package dev.jorgecastillo.watercat
 
-import android.util.Log
 import androidx.animation.LinearOutSlowInEasing
 import androidx.compose.*
 import androidx.lifecycle.whenStarted
