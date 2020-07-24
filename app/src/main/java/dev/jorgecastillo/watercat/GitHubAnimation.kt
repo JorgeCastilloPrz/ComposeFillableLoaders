@@ -6,10 +6,9 @@ import androidx.lifecycle.whenStarted
 import androidx.ui.core.LifecycleOwnerAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Canvas
+import androidx.ui.foundation.drawBackground
 import androidx.ui.graphics.Color
-import androidx.ui.graphics.drawscope.DrawScope
-import androidx.ui.graphics.drawscope.Fill
-import androidx.ui.graphics.drawscope.Stroke
+import androidx.ui.graphics.drawscope.*
 import androidx.ui.graphics.vector.PathParser
 import androidx.ui.layout.fillMaxSize
 import kotlin.math.max
@@ -22,12 +21,8 @@ private const val totalTime = strokeDrawingDuration + fillDuration
 val animationEasing = LinearOutSlowInEasing
 
 @Composable
-fun WaterCat() {
+fun WaterCat(originalVectorWidth: Int, originalVectorHeight: Int) {
   val state = animationTimeMillis()
-
-  fun getFillPercent(elapsedTime: Long): Float {
-    return max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
-  }
 
   fun keepDrawing(elapsedTime: Long): Boolean = elapsedTime < totalTime
 
@@ -42,31 +37,53 @@ fun WaterCat() {
     this.drawPath(path, Color.Blue, style = Stroke(4f))
   }
 
-  Canvas(modifier = Modifier.fillMaxSize()) {
-    val elapsedTime = state.value.elapsedTime
-    drawStroke(elapsedTime)
-
+  fun DrawScope.drawFilling(elapsedTime: Long) {
     // Is stoke completely drawn.
     if (elapsedTime > strokeDrawingDuration) {
       if (state.value.animationPhase < AnimationPhase.FILL_STARTED) {
         state.value = state.value.copy(animationPhase = AnimationPhase.FILL_STARTED)
       }
 
-      val fillPercent = getFillPercent(elapsedTime)
+      val fillPercent =
+        max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
+
       plainClip(fillPercent) {
         drawPath(catPath(), Color.Blue, style = Fill)
       }
     }
+  }
 
-    if (!keepDrawing(elapsedTime)) {
-      state.value = state.value.copy(animationPhase = AnimationPhase.FINISHED)
+  Canvas(modifier = Modifier.fillMaxSize() + Modifier.drawBackground(Color.Magenta)) {
+    val originalCanvasWidth = size.width
+    val originalCanvasHeight = size.height
+    val scaleFactor = originalCanvasWidth / originalVectorWidth
+
+    scale(
+      scaleX = scaleFactor,
+      scaleY = scaleFactor
+    ) {
+      translate(
+        left = originalCanvasWidth / 2f - originalVectorWidth / 2f,
+        top = originalCanvasHeight / 2f - originalVectorHeight / 2f
+      ) {
+
+        val elapsedTime = state.value.elapsedTime
+        drawStroke(elapsedTime)
+        drawFilling(elapsedTime)
+
+        if (!keepDrawing(elapsedTime)) {
+          state.value = state.value.copy(animationPhase = AnimationPhase.FINISHED)
+        }
+      }
     }
   }
 }
 
 /**
- * Returns a [State] holding a local animation time in milliseconds. The value always starts
- * at `0L` and stops updating when the call leaves the composition.
+ * Returns a [MutableState] holding a local animation time in milliseconds plus the current
+ * [AnimationPhase]. The local animation time always starts at `0L` and stops updating when the call
+ * leaves the composition. The animation phase starts as [AnimationPhase.STROKE_STARTED], since
+ * stroke always renders first.
  */
 @Composable
 private fun animationTimeMillis(): MutableState<AnimationState> {

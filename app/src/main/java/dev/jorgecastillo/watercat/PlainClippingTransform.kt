@@ -15,7 +15,7 @@ fun DrawScope.plainClip(currentFillPhase: Float, block: DrawScope.() -> Unit) {
   val bottom = center.dy + halfHeight
 
   Log.d("CAT", "left: $left, top: $top, right: $right, bottom: $bottom")
-
+  Log.d("CAT" ,"clipTop: ${(bottom - top) * (1f - currentFillPhase)}")
   this.clipRect(
     left = left,
     top = (bottom - top) * (1f - currentFillPhase),
