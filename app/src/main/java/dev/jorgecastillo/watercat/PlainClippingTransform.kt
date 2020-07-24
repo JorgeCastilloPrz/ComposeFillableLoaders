@@ -1,21 +1,20 @@
 package dev.jorgecastillo.watercat
 
-import android.util.Log
+import androidx.ui.geometry.Size
 import androidx.ui.graphics.ClipOp
 import androidx.ui.graphics.drawscope.DrawScope
 import androidx.ui.graphics.drawscope.clipRect
 
-fun DrawScope.plainClip(currentFillPhase: Float, block: DrawScope.() -> Unit) {
-  val halfWidth = (size.width / 2f)
-  val halfHeight = (size.height / 2f)
+fun DrawScope.plainClip(
+  currentFillPhase: Float,
+  originalVectorSize: Size,
+  block: DrawScope.() -> Unit
+) {
+  val left = 0f
+  val top = 0f
+  val right = originalVectorSize.width
+  val bottom = originalVectorSize.height
 
-  val left = center.dx - halfWidth
-  val top = center.dy - halfHeight
-  val right = center.dx + halfWidth
-  val bottom = center.dy + halfHeight
-
-  Log.d("CAT", "left: $left, top: $top, right: $right, bottom: $bottom")
-  Log.d("CAT" ,"clipTop: ${(bottom - top) * (1f - currentFillPhase)}")
   this.clipRect(
     left = left,
     top = (bottom - top) * (1f - currentFillPhase),

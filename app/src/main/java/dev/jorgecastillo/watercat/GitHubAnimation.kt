@@ -7,6 +7,7 @@ import androidx.ui.core.LifecycleOwnerAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Canvas
 import androidx.ui.foundation.drawBackground
+import androidx.ui.geometry.Size
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.drawscope.*
 import androidx.ui.graphics.vector.PathParser
@@ -21,7 +22,7 @@ private const val totalTime = strokeDrawingDuration + fillDuration
 val animationEasing = LinearOutSlowInEasing
 
 @Composable
-fun WaterCat(originalVectorWidth: Int, originalVectorHeight: Int) {
+fun WaterCat(originalVectorSize: Size) {
   val state = animationTimeMillis()
 
   fun keepDrawing(elapsedTime: Long): Boolean = elapsedTime < totalTime
@@ -47,7 +48,7 @@ fun WaterCat(originalVectorWidth: Int, originalVectorHeight: Int) {
       val fillPercent =
         max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
 
-      plainClip(fillPercent) {
+      plainClip(fillPercent, originalVectorSize) {
         drawPath(catPath(), Color.Blue, style = Fill)
       }
     }
@@ -56,15 +57,15 @@ fun WaterCat(originalVectorWidth: Int, originalVectorHeight: Int) {
   Canvas(modifier = Modifier.fillMaxSize() + Modifier.drawBackground(Color.Magenta)) {
     val originalCanvasWidth = size.width
     val originalCanvasHeight = size.height
-    val scaleFactor = originalCanvasWidth / originalVectorWidth
+    val scaleFactor = originalCanvasWidth / originalVectorSize.width
 
     scale(
       scaleX = scaleFactor,
       scaleY = scaleFactor
     ) {
       translate(
-        left = originalCanvasWidth / 2f - originalVectorWidth / 2f,
-        top = originalCanvasHeight / 2f - originalVectorHeight / 2f
+        left = originalCanvasWidth / 2f - originalVectorSize.width / 2f,
+        top = originalCanvasHeight / 2f - originalVectorSize.height / 2f
       ) {
 
         val elapsedTime = state.value.elapsedTime
