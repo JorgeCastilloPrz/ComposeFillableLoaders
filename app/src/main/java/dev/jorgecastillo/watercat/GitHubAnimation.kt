@@ -51,7 +51,10 @@ fun WaterCat(originalVectorSize: Size) {
   Canvas(modifier = Modifier.fillMaxSize() + Modifier.drawBackground(Color.Magenta)) {
     val originalCanvasWidth = size.width
     val originalCanvasHeight = size.height
-    val scaleFactor = originalCanvasWidth / originalVectorSize.width
+    val scaleFactor = min(
+      originalCanvasWidth / originalVectorSize.width,
+      originalCanvasHeight / originalVectorSize.height
+    )
 
     scale(
       scaleX = scaleFactor,
