@@ -37,12 +37,12 @@ fun WaterCat(originalVectorSize: Size) {
   }
 
   fun DrawScope.drawFilling(elapsedTime: Long) {
-    // Is stoke completely drawn.
+    // Is stoke completely drawn, we can start drawing the filling.
     if (elapsedTime > strokeDrawingDuration) {
       val fillPercent =
         max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
 
-      plainClip(fillPercent, originalVectorSize) {
+      waveClip(fillPercent, originalVectorSize) {
         drawPath(catPath(), Color.Blue, style = Fill)
       }
     }
