@@ -42,7 +42,7 @@ fun WaterCat(originalVectorSize: Size) {
       val fillPercent =
         max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
 
-      waveClip(fillPercent, originalVectorSize) {
+      waveClip(fillPercent, originalVectorSize, 128) {
         drawPath(catPath(), Color.Blue, style = Fill)
       }
     }
