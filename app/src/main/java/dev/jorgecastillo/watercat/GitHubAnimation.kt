@@ -21,7 +21,7 @@ private const val totalTime = strokeDrawingDuration + fillDuration
 val animationEasing = LinearOutSlowInEasing
 
 @Composable
-fun WaterCat(originalVectorSize: Size) {
+fun WaterCat(originalVectorSize: Size, strokeColor: Color, fillColor: Color) {
   val state = animationTimeMillis()
 
   fun DrawScope.drawStroke(elapsedTime: Long) {
@@ -32,7 +32,7 @@ fun WaterCat(originalVectorSize: Size) {
     val path = PathParser().addPathNodes(
       catPathNodes().take(nodesToDraw)
     ).toPath()
-    this.drawPath(path, Color.Blue, style = Stroke(4f))
+    this.drawPath(path, strokeColor, style = Stroke(2f))
   }
 
   fun DrawScope.drawFilling(elapsedTime: Long) {
@@ -42,7 +42,7 @@ fun WaterCat(originalVectorSize: Size) {
         max(0f, min(1f, (elapsedTime - strokeDrawingDuration) / fillDuration.toFloat()))
 
       waveClip(fillPercent, originalVectorSize, 128) {
-        drawPath(catPath(), Color.Blue, style = Fill)
+        drawPath(catPath(), fillColor, style = Fill)
       }
     }
   }
