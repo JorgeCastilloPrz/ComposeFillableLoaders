@@ -6,7 +6,6 @@ import androidx.lifecycle.whenStarted
 import androidx.ui.core.LifecycleOwnerAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Canvas
-import androidx.ui.foundation.drawBackground
 import androidx.ui.geometry.Size
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.drawscope.*
@@ -48,7 +47,7 @@ fun WaterCat(originalVectorSize: Size) {
     }
   }
 
-  Canvas(modifier = Modifier.fillMaxSize() + Modifier.drawBackground(Color.Magenta)) {
+  Canvas(modifier = Modifier.fillMaxSize()) {
     val originalCanvasWidth = size.width
     val originalCanvasHeight = size.height
     val scaleFactor = min(
