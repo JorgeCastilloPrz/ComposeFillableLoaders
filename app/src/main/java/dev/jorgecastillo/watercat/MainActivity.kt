@@ -20,7 +20,9 @@ class MainActivity : AppCompatActivity() {
           WaterCat(
             originalVectorSize = Size(512f, 512f),
             strokeColor = Color.White,
-            fillColor = Color.Magenta
+            fillColor = Color.Magenta,
+            strokeDurationMillis = 2000,
+            fillDurationMillis = 8000
           )
         }
       }
