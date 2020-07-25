@@ -1,7 +1,7 @@
 ## ComposeFillableLoaders
 
-![gif](./assets/watercat.gif)
-![png](./assets/watercat.png)
+|![gif](./assets/watercat.gif)|![png](./assets/watercat.png)|
+|---|---|
 
 This is a port of my old library [AndroidFillableLoaders](https://github.com/JorgeCastilloPrz/AndroidFillableLoaders), which was an old port from [the iOS FillableLoaders](https://github.com/polqf/FillableLoaders) library by [Pol Quintana](https://github.com/polqf). The project uses [Jetpack Compose dev15](https://developer.android.com/jetpack/androidx/releases/compose).
 
