@@ -1,4 +1,4 @@
-package dev.jorgecastillo.watercat
+package dev.jorgecastillo.fillableloader
 
 import androidx.animation.LinearOutSlowInEasing
 import androidx.compose.Composable
@@ -21,7 +21,7 @@ import kotlin.math.min
 val animationEasing = LinearOutSlowInEasing
 
 @Composable
-fun WaterCat(
+fun FillableLoader(
   originalVectorSize: Size,
   strokeColor: Color = Color.DarkGray,
   fillColor: Color = Color.Magenta,

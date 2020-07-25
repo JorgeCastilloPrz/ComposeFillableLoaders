@@ -1,4 +1,4 @@
-package dev.jorgecastillo.watercat
+package dev.jorgecastillo.fillableloader
 
 enum class AnimationPhase {
   STROKE_STARTED, FILL_STARTED, FINISHED

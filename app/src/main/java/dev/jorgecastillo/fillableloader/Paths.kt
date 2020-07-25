@@ -1,4 +1,4 @@
-package dev.jorgecastillo.watercat
+package dev.jorgecastillo.fillableloader
 
 import androidx.ui.graphics.vector.PathParser
 

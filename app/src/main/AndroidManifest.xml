@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.jorgecastillo.watercat">
+    package="dev.jorgecastillo.fillableloader">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeFillableLoaders">
         <activity
-            android:name="dev.jorgecastillo.watercat.MainActivity"
+            android:name="dev.jorgecastillo.fillableloader.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package dev.jorgecastillo.watercat
+package dev.jorgecastillo.fillableloader
 
 import androidx.ui.geometry.Size
 import androidx.ui.graphics.ClipOp

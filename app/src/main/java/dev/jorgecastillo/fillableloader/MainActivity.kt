@@ -1,4 +1,4 @@
-package dev.jorgecastillo.watercat
+package dev.jorgecastillo.fillableloader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     setContent {
       MaterialTheme {
         Box(Modifier.fillMaxSize() + Modifier.drawBackground(Color.DarkGray)) {
-          WaterCat(
+          FillableLoader(
             originalVectorSize = Size(512f, 512f),
             strokeColor = Color.White,
             fillColor = Color.Magenta,
