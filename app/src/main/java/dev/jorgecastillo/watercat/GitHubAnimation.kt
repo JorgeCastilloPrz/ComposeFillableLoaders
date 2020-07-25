@@ -1,7 +1,11 @@
 package dev.jorgecastillo.watercat
 
 import androidx.animation.LinearOutSlowInEasing
-import androidx.compose.*
+import androidx.compose.Composable
+import androidx.compose.State
+import androidx.compose.dispatch.withFrameMillis
+import androidx.compose.launchInComposition
+import androidx.compose.state
 import androidx.lifecycle.whenStarted
 import androidx.ui.core.LifecycleOwnerAmbient
 import androidx.ui.core.Modifier
@@ -86,11 +90,11 @@ private fun animationTimeMillis(): State<AnimationState> {
   val lifecycleOwner = LifecycleOwnerAmbient.current
 
   launchInComposition {
-    val startTime = awaitFrameMillis { it }
+    val startTime = withFrameMillis { it }
 
     lifecycleOwner.whenStarted {
       while (true) {
-        awaitFrameMillis { frameTime ->
+        withFrameMillis { frameTime ->
           val elapsedTime = frameTime - startTime
           if (!keepDrawing(elapsedTime)) {
             state.value = state.value.copy(animationPhase = AnimationPhase.FINISHED)
